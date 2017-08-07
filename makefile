@@ -37,7 +37,9 @@ VPATH = $(OUTDIR) $(dir $(SRCS))
 
 # 実行ファイル作成 (リンク)
 $(PROG): $(OBJS) $(DEPS)
-	$(CC) -o $@ $(OBJS)
+	@echo $(CC) $@
+	@$(CC) -o $@ $(OBJS)
+	@echo finished!
 
 # 依存関係ファイル作成
 $(OUTDIR)/%.d:%.c
@@ -46,12 +48,14 @@ $(OUTDIR)/%.d:%.c
 #	obj/main.d: src/main.c src/inc/test1.h src/inc2/test2.h
 #	obj/main.o: src/main.c src/inc/test1.h src/inc2/test2.h
 	@cmd.exe /C "if not exist $(OUTDIR) mkdir $(OUTDIR)"
-	$(CC) $(CFLAGS) -MM $< | $(SED) 's!$(subst .d,.o,$(notdir $@)):!$@:!' > $@
-	$(CC) $(CFLAGS) -MM $< | $(SED) 's!$(subst .d,.o,$(notdir $@)):!$(subst .d,.o,$@):!' >> $@
+	@echo $(CC) $< : $@
+	@$(CC) $(CFLAGS) -MM $< | $(SED) 's!$(subst .d,.o,$(notdir $@)):!$@:!' > $@
+	@$(CC) $(CFLAGS) -MM $< | $(SED) 's!$(subst .d,.o,$(notdir $@)):!$(subst .d,.o,$@):!' >> $@
 
 # オブジェクト作成 (コンパイル)
 $(OUTDIR)/%.o:%.c
-	$(CC) $(CFLAGS) -c -o $@ $<
+	@echo $(CC) $< : $@
+	@$(CC) $(CFLAGS) -c -o $@ $<
 
 .PHONY : clean
 clean :
