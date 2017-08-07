@@ -46,8 +46,8 @@ $(OUTDIR)/%.d:%.c
 #	obj/main.d: src/main.c src/inc/test1.h src/inc2/test2.h
 #	obj/main.o: src/main.c src/inc/test1.h src/inc2/test2.h
 	@cmd.exe /C "if not exist $(OUTDIR) mkdir $(OUTDIR)"
-	$(CC) $(CFLAGS) -MM $< | $(SED) -e 's!$(subst .d,.o,$(notdir $@))!$@!' > $@
-	$(CC) $(CFLAGS) -MM $< | $(SED) -e 's!$(subst .d,.o,$(notdir $@))!$(subst .d,.o,$@)!' >> $@
+	$(CC) $(CFLAGS) -MM $< | $(SED) 's!$(subst .d,.o,$(notdir $@)):!$@:!' > $@
+	$(CC) $(CFLAGS) -MM $< | $(SED) 's!$(subst .d,.o,$(notdir $@)):!$(subst .d,.o,$@):!' >> $@
 
 # オブジェクト作成 (コンパイル)
 $(OUTDIR)/%.o:%.c
