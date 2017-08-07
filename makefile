@@ -9,9 +9,9 @@ INCDIR += src/inc
 INCDIR += src/inc2
 
 # ソース (ファイルパスを指定する)
-SRCS += src/main.c
+SRC += src/main.c
 # ソース (特定のフォルダ内すべてをコンパイル対象とする場合)
-SRCS += $(wildcard src/test/*.c)
+SRC += src/test/*.c
 
 # 使用するコンパイラ
 CC = gcc
@@ -23,6 +23,8 @@ CFLAGS += -g
 
 # ------ ここより下は変更しないこと! ------
 
+# 対象ソース -> src/main.c src/test/test.c
+SRCS := $(wildcard $(SRC))
 # 出力オブジェクト -> obj/main.o obj/test.o
 OBJS := $(addprefix $(OUTDIR)/,$(notdir $(patsubst %.c,%.o,$(SRCS))))
 # 依存関係ファイル -> obj/main.d obj/test.d
