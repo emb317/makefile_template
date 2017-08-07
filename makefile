@@ -21,6 +21,9 @@ CFLAGS += -O2
 CFLAGS += $(addprefix -I ,$(INCDIR))
 CFLAGS += -g
 
+# Windowsにsedが無いのでGitので代用
+SED = "C:\Program Files\Git\usr\bin\sed.exe"
+
 # ------ ここより下は変更しないこと! ------
 
 # 対象ソース -> src/main.c src/test/test.c
@@ -43,8 +46,8 @@ $(OUTDIR)/%.d:%.c
 #	obj/main.d: src/main.c src/inc/test1.h src/inc2/test2.h
 #	obj/main.o: src/main.c src/inc/test1.h src/inc2/test2.h
 	@cmd.exe /C "if not exist $(OUTDIR) mkdir $(OUTDIR)"
-	$(CC) $(CFLAGS) -MM $< | sed -e 's!$(subst .d,.o,$(notdir $@))!$@!' > $@
-	$(CC) $(CFLAGS) -MM $< | sed -e 's!$(subst .d,.o,$(notdir $@))!$(subst .d,.o,$@)!' >> $@
+	$(CC) $(CFLAGS) -MM $< | $(SED) -e 's!$(subst .d,.o,$(notdir $@))!$@!' > $@
+	$(CC) $(CFLAGS) -MM $< | $(SED) -e 's!$(subst .d,.o,$(notdir $@))!$(subst .d,.o,$@)!' >> $@
 
 # オブジェクト作成 (コンパイル)
 $(OUTDIR)/%.o:%.c
